@@ -1,3 +1,5 @@
+// vercel-redeploy
+
 import { defineConfig } from "vite";
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
