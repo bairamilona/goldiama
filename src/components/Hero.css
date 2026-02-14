@@ -1,0 +1,430 @@
+/* ============================================
+   GOLDIAMA HERO - ИЗОЛИРОВАННЫЙ КОМПОНЕНТ
+   Все стили имеют префикс goldiama-hero-
+   для предотвращения конфликтов с другими сайтами
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+/* Основной контейнер Hero */
+.goldiama-hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  color: #fff;
+  z-index: 1;
+  will-change: transform;
+  transition: transform 0.1s linear;
+  /* ✅ Разрешаем вертикальный свайп для скролла */
+  touch-action: pan-y;
+  pointer-events: none; /* ✅ Hero не блокирует скролл */
+}
+
+/* Видео фон */
+.goldiama-hero__video {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  filter: blur(0.3px);
+  image-rendering: smooth;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Cinematic drift эффект */
+.goldiama-hero__video--drift {
+  animation: goldiama-hero-cinematicDrift 15s ease-in-out infinite;
+}
+
+@keyframes goldiama-hero-cinematicDrift {
+  0% {
+    transform: scale(1.08) translate(0, 0);
+  }
+  25% {
+    transform: scale(1.10) translate(-1.5%, 1%);
+  }
+  50% {
+    transform: scale(1.12) translate(1%, -0.8%);
+  }
+  75% {
+    transform: scale(1.10) translate(-0.8%, 1.2%);
+  }
+  100% {
+    transform: scale(1.08) translate(0, 0);
+  }
+}
+
+/* Затемнение */
+.goldiama-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.55)),
+    radial-gradient(circle at 70% 30%, rgba(0,0,0,.15), transparent 60%);
+}
+
+/* Живой шум */
+.goldiama-hero__noise {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  animation: goldiama-hero-noise-animate 0.2s infinite;
+}
+
+@keyframes goldiama-hero-noise-animate {
+  0% { 
+    background-position: 0% 0%;
+    opacity: 0.08;
+  }
+  50% { 
+    background-position: 10% -5%;
+    opacity: 0.06;
+  }
+  100% { 
+    background-position: -5% 5%;
+    opacity: 0.08;
+  }
+}
+
+/* Контент */
+.goldiama-hero__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+/* Заголовок */
+.goldiama-hero__title {
+  position: absolute;
+  left: 5vw;
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
+  font-size: clamp(60px, 8vw, 120px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+.goldiama-hero__title-line {
+  display: block;
+  width: fit-content;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.goldiama-hero__title-line--left {
+  margin-left: 0;
+}
+
+.goldiama-hero__title-line--center {
+  margin-left: 25%;
+}
+
+.goldiama-hero__title-line--right {
+  margin-left: auto;
+}
+
+.goldiama-hero__title-line--italic {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Превью видео слева внизу */
+.goldiama-hero__film {
+  position: absolute;
+  left: 5vw;
+  bottom: 5vw;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  z-index: 10;
+  pointer-events: auto; /* ✅ Разрешаем клики на превью */
+}
+
+.goldiama-hero__film-preview {
+  position: relative;
+  width: 200px;
+  height: 112px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.goldiama-hero__film:hover .goldiama-hero__film-preview {
+  transform: scale(1.05);
+}
+
+.goldiama-hero__film-preview-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.goldiama-hero__film-text {
+  color: #fff;
+  user-select: none;
+}
+
+.goldiama-hero__film-text-label {
+  margin: 0 0 4px 0;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.goldiama-hero__film-text-duration {
+  margin: 0;
+  font-size: 11px;
+  opacity: 0.8;
+  letter-spacing: 0.05em;
+}
+
+.goldiama-hero__film-text-duration span {
+  margin-left: 6px;
+}
+
+/* Описание справа внизу */
+.goldiama-hero__desc {
+  position: absolute;
+  right: 5vw;
+  bottom: 5vw;
+  max-width: 320px;
+  font-size: 13px;
+  line-height: 1.6;
+  user-select: none;
+  z-index: 10;
+  pointer-events: auto; /* ✅ Разрешаем клики на ссылку */
+}
+
+.goldiama-hero__desc-text {
+  margin: 0 0 12px 0;
+  opacity: 0.9;
+}
+
+.goldiama-hero__link {
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding-bottom: 2px;
+  transition: all 0.3s ease;
+}
+
+.goldiama-hero__link:hover {
+  border-bottom-color: rgba(255, 255, 255, 0.8);
+  opacity: 1;
+}
+
+/* Модальное окно */
+.goldiama-hero-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+  animation: goldiama-hero-fadeIn 0.3s ease;
+}
+
+.goldiama-hero-modal__content {
+  position: relative;
+  background: #111;
+  padding: 24px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 18px;
+  max-width: 95%;
+  max-height: 90%;
+}
+
+.goldiama-hero-modal__player {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.goldiama-hero-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.goldiama-hero-modal__close:hover {
+  background: rgba(255,255,255,.2);
+  border-color: rgba(255,255,255,.4);
+}
+
+@keyframes goldiama-hero-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   МОБИЛЬНАЯ АДАПТАЦИЯ
+   ============================================ */
+
+/* Планшеты и маленькие десктопы */
+@media (max-width: 768px) {
+  .goldiama-hero__title {
+    left: 4vw;
+    right: 4vw;
+    top: 30%;
+    font-size: clamp(42px, 11vw, 72px);
+  }
+
+  .goldiama-hero__title-line--center {
+    margin-left: 15%;
+  }
+
+  .goldiama-hero__film {
+    left: 4vw;
+    bottom: 18vh;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .goldiama-hero__film-preview {
+    width: 160px;
+    height: 90px;
+  }
+
+  .goldiama-hero__film-text-label {
+    font-size: 11px;
+  }
+
+  .goldiama-hero__film-text-duration {
+    font-size: 10px;
+  }
+
+  .goldiama-hero__desc {
+    right: 4vw;
+    bottom: 18vh;
+    max-width: 260px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .goldiama-hero__desc-text {
+    margin-bottom: 10px;
+  }
+
+  .goldiama-hero__link {
+    font-size: 11px;
+  }
+}
+
+/* Смартфоны */
+@media (max-width: 480px) {
+  .goldiama-hero__title {
+    top: 25%;
+    font-size: clamp(32px, 10vw, 56px);
+  }
+
+  .goldiama-hero__title-line--center {
+    margin-left: 10%;
+  }
+
+  .goldiama-hero__film {
+    bottom: 15vh;
+    gap: 8px;
+  }
+
+  .goldiama-hero__film-preview {
+    width: 130px;
+    height: 73px;
+  }
+
+  .goldiama-hero__film-text-label {
+    font-size: 10px;
+  }
+
+  .goldiama-hero__film-text-duration {
+    font-size: 9px;
+  }
+
+  .goldiama-hero__desc {
+    bottom: 15vh;
+    max-width: 220px;
+    font-size: 11px;
+  }
+
+  .goldiama-hero__link {
+    font-size: 10px;
+  }
+
+  .goldiama-hero-modal__content {
+    padding: 16px;
+  }
+
+  .goldiama-hero-modal__close {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+/* Очень маленькие смартфоны */
+@media (max-width: 375px) {
+  .goldiama-hero__title {
+    top: 22%;
+    font-size: clamp(28px, 9vw, 48px);
+  }
+
+  .goldiama-hero__film {
+    bottom: 12vh;
+  }
+
+  .goldiama-hero__film-preview {
+    width: 110px;
+    height: 62px;
+  }
+
+  .goldiama-hero__desc {
+    bottom: 12vh;
+    max-width: 200px;
+    font-size: 10px;
+  }
+}
