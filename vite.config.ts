@@ -87,3 +87,26 @@ export default defineConfig({
     },
   },
 })
+
+
+
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "node:path";
+
+export default defineConfig({
+  plugins: [
+    react(),
+    {
+      name: "resolve-figma-asset-protocol",
+      enforce: "pre",
+      resolveId(source) {
+        if (source.startsWith("figma:asset/")) {
+          const file = source.replace("figma:asset/", "");
+          return path.resolve(__dirname, "src/figma-assets", file);
+        }
+        return null;
+      },
+    },
+  ],
+});
