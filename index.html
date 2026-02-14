@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- SEO Meta Tags -->
+    <title>GOLDIAMA - Premium Gold, Silver & Platinum Store</title>
+    <meta name="description" content="Buy premium gold bars, silver bars, and platinum coins. Wholesale & retail with real-time pricing and 3D visualization." />
+    <meta name="keywords" content="gold, silver, platinum, precious metals, bullion, investment" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="GOLDIAMA - Premium Precious Metals" />
+    <meta property="og:description" content="Buy premium gold, silver & platinum with real-time pricing" />
+    <meta property="og:type" content="website" />
+    
+    <!-- Resource Hints - Preconnect к внешним API для быстрой загрузки -->
+    <link rel="preconnect" href="https://api.binance.com" crossorigin />
+    <link rel="dns-prefetch" href="https://api.binance.com" />
+    
+    <!-- Preconnect к Spline CDN -->
+    <link rel="preconnect" href="https://prod.spline.design" crossorigin />
+    <link rel="dns-prefetch" href="https://prod.spline.design" />
+    
+    <!-- Preconnect к шрифтам (если используются Google Fonts) -->
+    <!-- Раскомментируйте если нужно -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" /> -->
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0A0E1A" />
+    
+    <!-- Performance: Reduce layout shifts -->
+    <style>
+      /* Critical CSS - загружается мгновенно */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+      }
+      
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #ffffff;
+        color: #111827;
+      }
+      
+      /* Preloader styles - prevent layout shift */
+      #root {
+        min-height: 100vh;
+      }
+      
+      /* Loading animation */
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Web Vitals Script (optional - для production analytics) -->
+    <script>
+      // Disable console in production (опционально)
+      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        console.log = console.warn = console.error = () => {};
+      }
+    </script>
+  </body>
+</html>

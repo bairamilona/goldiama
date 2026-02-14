@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goldiama - Compare Block</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- React, ReactDOM, Motion, Spline -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@splinetool/runtime@1.0.6/build/runtime.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11/dist/framer-motion.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        *::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        
+        html,
+        body {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0f;
+            overflow-x: hidden;
+        }
+        
+        .compare-section {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            min-height: 900px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background: #0a0a0f;
+        }
+        
+        .top-row {
+            position: relative;
+            width: 100%;
+            height: 70%;
+            display: flex;
+            z-index: 20;
+        }
+        
+        .bottom-row {
+            position: relative;
+            width: 100%;
+            height: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        .panel {
+            position: relative;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+            cursor: pointer;
+        }
+        
+        .panel-full {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+            cursor: pointer;
+        }
+        
+        .overlay-dim {
+            position: absolute;
+            inset: 0;
+            background: black;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .overlay-bright {
+            position: absolute;
+            inset: 0;
+            background: white;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            opacity: 0;
+            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .spline-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .spline-container-luxury {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .content-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            z-index: 10;
+        }
+        
+        .content-wrapper {
+            padding-left: 4rem;
+            max-width: 28rem;
+        }
+        
+        .content-wrapper-luxury {
+            padding-left: 4rem;
+            max-width: 32rem;
+        }
+        
+        .title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 3.75rem);
+            line-height: 1;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 0.75rem;
+            transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1.5rem;
+            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .description {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.625;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.1s;
+        }
+        
+        .specs {
+            margin-bottom: 2rem;
+            opacity: 0;
+            transition: opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) 0.2s;
+        }
+        
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+        
+        .specs-grid-luxury {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem 2rem;
+        }
+        
+        .spec-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .spec-dash {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.9);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            pointer-events: auto;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1) 0.3s;
+        }
+        
+        .cta-button:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .border-vertical {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            z-index: 50;
+            left: 50%;
+            transition: left 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        .border-horizontal {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            pointer-events: none;
+            z-index: 50;
+            top: 70%;
+            transition: top 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        
+        /* Hover states */
+        .panel:hover .spline-container {
+            transform: scale(1.15);
+        }
+        
+        .panel-full:hover .spline-container-luxury {
+            transform: scale(1.15);
+        }
+        
+        .panel:hover .overlay-bright,
+        .panel-full:hover .overlay-bright {
+            opacity: 0.15;
+        }
+        
+        .panel:hover .description,
+        .panel:hover .specs,
+        .panel:hover .cta-button,
+        .panel-full:hover .description,
+        .panel-full:hover .specs,
+        .panel-full:hover .cta-button {
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper,
+            .content-wrapper-luxury {
+                padding-left: 2rem;
+                max-width: 90%;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/javascript">
+        const { useState, useEffect } = React;
+        const { createRoot } = ReactDOM;
+        
+        // Spline React Component
+        const SplineComponent = ({ scene, style }) => {
+            const canvasRef = React.useRef(null);
+            const viewerRef = React.useRef(null);
+
+            useEffect(() => {
+                if (canvasRef.current && !viewerRef.current) {
+                    const viewer = new window.SPLINE.Application(canvasRef.current);
+                    viewer.load(scene);
+                    viewerRef.current = viewer;
+                }
+
+                return () => {
+                    if (viewerRef.current) {
+                        viewerRef.current.dispose();
+                        viewerRef.current = null;
+                    }
+                };
+            }, [scene]);
+
+            return React.createElement('canvas', { 
+                ref: canvasRef,
+                style: style
+            });
+        };
+
+        // CompareBlock Component
+        const CompareBlock = () => {
+            const [hoveredSide, setHoveredSide] = useState(null);
+
+            const leftProduct = {
+                title: 'Custom Bar',
+                subtitle: 'Personalized Ingots',
+                description: 'Design your own gold bar with custom engravings, weights, and finishes.',
+                specs: [
+                    'Available in 1oz to 1kg',
+                    'Custom engraving included',
+                    '99.99% pure gold',
+                    'Certificate of authenticity'
+                ]
+            };
+
+            const rightProduct = {
+                title: 'Custom Coin',
+                subtitle: 'Unique Collectibles',
+                description: 'Craft personalized gold coins with bespoke designs and inscriptions.',
+                specs: [
+                    'Available in 1/10oz to 1oz',
+                    'Custom design & text',
+                    '99.99% pure gold',
+                    'Limited edition minting'
+                ]
+            };
+
+            return React.createElement('section', { className: 'compare-section' },
+                // Top Row
+                React.createElement('div', { className: 'top-row' },
+                    // Left Panel - Custom Bar
+                    React.createElement('div', {
+                        className: 'panel',
+                        onMouseEnter: () => setHoveredSide('left'),
+                        onMouseLeave: () => setHoveredSide(null)
+                    },
+                        React.createElement('div', {
+                            className: 'overlay-dim',
+                            style: { opacity: hoveredSide === 'right' ? 0.6 : 0 }
+                        }),
+                        React.createElement('div', { className: 'overlay-bright' }),
+                        React.createElement('div', { className: 'spline-container' },
+                            React.createElement('div', { style: { width: '900px', height: '900px' } },
+                                React.createElement(SplineComponent, {
+                                    scene: 'https://prod.spline.design/LRiA4rWtLlexpu7i/scene.splinecode',
+                                    style: { width: '100%', height: '100%', pointerEvents: 'none' }
+                                })
+                            )
+                        ),
+                        React.createElement('div', {
+                            className: 'content-overlay',
+                            style: { opacity: hoveredSide === 'left' ? 1 : hoveredSide === 'right' ? 0.4 : 0.7 }
+                        },
+                            React.createElement('div', { className: 'content-wrapper' },
+                                React.createElement('h3', { className: 'title' }, leftProduct.title),
+                                React.createElement('p', { className: 'subtitle' }, leftProduct.subtitle),
+                                React.createElement('p', { className: 'description' }, leftProduct.description),
+                                React.createElement('div', { className: 'specs' },
+                                    React.createElement('div', { className: 'specs-grid' },
+                                        leftProduct.specs.map((spec, i) =>
+                                            React.createElement('div', { key: i, className: 'spec-item' },
+                                                React.createElement('span', { className: 'spec-dash' }, '—'),
+                                                React.createElement('span', null, spec)
+                                            )
+                                        )
+                                    )
+                                ),
+                                React.createElement('button', { className: 'cta-button' }, 'Customize Now')
+                            )
+                        )
+                    ),
+                    
+                    // Right Panel - Custom Coin
+                    React.createElement('div', {
+                        className: 'panel',
+                        onMouseEnter: () => setHoveredSide('right'),
+                        onMouseLeave: () => setHoveredSide(null)
+                    },
+                        React.createElement('div', {
+                            className: 'overlay-dim',
+                            style: { opacity: hoveredSide === 'left' ? 0.6 : 0 }
+                        }),
+                        React.createElement('div', { className: 'overlay-bright' }),
+                        React.createElement('div', { className: 'spline-container' },
+                            React.createElement('div', { style: { width: '900px', height: '900px' } },
+                                React.createElement(SplineComponent, {
+                                    scene: 'https://prod.spline.design/xDHgvyQ0AufB0oAo/scene.splinecode',
+                                    style: { width: '100%', height: '100%', pointerEvents: 'none' }
+                                })
+                            )
+                        ),
+                        React.createElement('div', {
+                            className: 'content-overlay',
+                            style: { opacity: hoveredSide === 'right' ? 1 : hoveredSide === 'left' ? 0.4 : 0.7 }
+                        },
+                            React.createElement('div', { className: 'content-wrapper' },
+                                React.createElement('h3', { className: 'title' }, rightProduct.title),
+                                React.createElement('p', { className: 'subtitle' }, rightProduct.subtitle),
+                                React.createElement('p', { className: 'description' }, rightProduct.description),
+                                React.createElement('div', { className: 'specs' },
+                                    React.createElement('div', { className: 'specs-grid' },
+                                        rightProduct.specs.map((spec, i) =>
+                                            React.createElement('div', { key: i, className: 'spec-item' },
+                                                React.createElement('span', { className: 'spec-dash' }, '—'),
+                                                React.createElement('span', null, spec)
+                                            )
+                                        )
+                                    )
+                                ),
+                                React.createElement('button', { className: 'cta-button' }, 'Customize Now')
+                            )
+                        )
+                    ),
+                    
+                    // Vertical Border
+                    React.createElement('div', {
+                        className: 'border-vertical',
+                        style: {
+                            left: hoveredSide === 'left' ? '55%' : hoveredSide === 'right' ? '45%' : '50%'
+                        }
+                    })
+                ),
+                
+                // Bottom Row - Luxury Box
+                React.createElement('div', { className: 'bottom-row' },
+                    React.createElement('div', {
+                        className: 'panel-full',
+                        onMouseEnter: () => setHoveredSide('luxury'),
+                        onMouseLeave: () => setHoveredSide(null)
+                    },
+                        React.createElement('div', {
+                            className: 'overlay-dim',
+                            style: { opacity: (hoveredSide === 'left' || hoveredSide === 'right') ? 0.6 : 0 }
+                        }),
+                        React.createElement('div', { className: 'overlay-bright' }),
+                        React.createElement('div', { className: 'spline-container-luxury' },
+                            React.createElement('div', { style: { width: '100vw', height: '100%', minHeight: '600px' } },
+                                React.createElement(SplineComponent, {
+                                    scene: 'https://prod.spline.design/yT0oCr3pevScJCWl/scene.splinecode',
+                                    style: { width: '100%', height: '100%', pointerEvents: 'none' }
+                                })
+                            )
+                        ),
+                        React.createElement('div', {
+                            className: 'content-overlay',
+                            style: { opacity: hoveredSide === 'luxury' ? 1 : (hoveredSide === 'left' || hoveredSide === 'right') ? 0.4 : 0.7 }
+                        },
+                            React.createElement('div', { className: 'content-wrapper-luxury' },
+                                React.createElement('h3', { className: 'title' }, 'Luxury Box'),
+                                React.createElement('p', { className: 'subtitle' }, 'Premium Presentation'),
+                                React.createElement('p', { className: 'description' }, 'Every custom order arrives in luxury packaging, designed for gifting or personal collection.'),
+                                React.createElement('div', { className: 'specs' },
+                                    React.createElement('div', { className: 'specs-grid-luxury' },
+                                        ['Hand-Crafted Wooden Cases', 'Velvet Interior Lining', 'Authenticity Certificates', 'Insured Worldwide Delivery'].map((spec, i) =>
+                                            React.createElement('div', { key: i, className: 'spec-item' },
+                                                React.createElement('span', { className: 'spec-dash' }, '—'),
+                                                React.createElement('span', null, spec)
+                                            )
+                                        )
+                                    )
+                                ),
+                                React.createElement('button', { className: 'cta-button' }, 'Explore Options')
+                            )
+                        )
+                    )
+                ),
+                
+                // Horizontal Border
+                React.createElement('div', {
+                    className: 'border-horizontal',
+                    style: {
+                        top: hoveredSide === 'luxury' ? '67%' : (hoveredSide === 'left' || hoveredSide === 'right') ? '73%' : '70%'
+                    }
+                })
+            );
+        };
+
+        // Render
+        const root = createRoot(document.getElementById('root'));
+        root.render(React.createElement(CompareBlock));
+    </script>
+</body>
+</html>
