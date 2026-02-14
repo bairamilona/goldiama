@@ -1,0 +1,398 @@
+@custom-variant dark (&:is(.dark *));
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbars globally */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+html,
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Hide number input spinners globally */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Optimized Grain Effect Animation */
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  30% { transform: translate(7%, -25%); }
+  50% { transform: translate(-15%, 10%); }
+  70% { transform: translate(0%, 15%); }
+  90% { transform: translate(-10%, 10%); }
+}
+
+.grain-effect::before {
+  content: '';
+  position: absolute;
+  inset: -100%;
+  z-index: 5;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+  opacity: 0.075;
+  pointer-events: none;
+  animation: grain 8s steps(6) infinite;
+  mix-blend-mode: overlay;
+  will-change: transform;
+}
+
+:root {
+  /* Typography System - Institutional Pairing */
+  --font-body: "Inter", sans-serif;
+  --font-heading: "Belleza", serif;
+  --font-data: "Inter", sans-serif;
+  --font-size: 16px;
+  
+  /* Refined Institutional Color Palette */
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  
+  /* Layered Neutral Scale */
+  --surface-50: #FAFAFA;
+  --surface-100: #F5F5F5;
+  --surface-200: #EFEFEF;
+  --surface-300: #E5E5E5;
+  
+  /* Muted Institutional Gold */
+  --gold-primary: #B8A07E;
+  --gold-accent: #C9B382;
+  --gold-light: #E8DCC8;
+  
+  /* Data Visualization */
+  --data-positive: #059669;
+  --data-negative: #DC2626;
+  --data-neutral: #6B7280;
+  
+  /* Existing tokens refined */
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #1a1a1a;
+  --primary-foreground: #ffffff;
+  --secondary: #F5F5F5;
+  --secondary-foreground: #1a1a1a;
+  --muted: #F5F5F5;
+  --muted-foreground: #6B7280;
+  --accent: #EFEFEF;
+  --accent-foreground: #1a1a1a;
+  --destructive: #DC2626;
+  --destructive-foreground: #ffffff;
+  --border: rgba(0, 0, 0, 0.08);
+  --input: transparent;
+  --input-background: #FAFAFA;
+  --switch-background: #E5E5E5;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #B8A07E;
+  
+  /* Chart colors - institutional palette */
+  --chart-1: #059669;
+  --chart-2: #3B82F6;
+  --chart-3: #8B5CF6;
+  --chart-4: #F59E0B;
+  --chart-5: #DC2626;
+  
+  --radius: 0.5rem;
+  --sidebar: #FAFAFA;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #1a1a1a;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #F5F5F5;
+  --sidebar-accent-foreground: #1a1a1a;
+  --sidebar-border: #E5E5E5;
+  --sidebar-ring: #B8A07E;
+  
+  /* Spacing Grid System - 8px base */
+  --spacing-unit: 8px;
+  --spacing-xs: calc(var(--spacing-unit) * 1); /* 8px */
+  --spacing-sm: calc(var(--spacing-unit) * 2); /* 16px */
+  --spacing-md: calc(var(--spacing-unit) * 3); /* 24px */
+  --spacing-lg: calc(var(--spacing-unit) * 4); /* 32px */
+  --spacing-xl: calc(var(--spacing-unit) * 6); /* 48px */
+  --spacing-2xl: calc(var(--spacing-unit) * 8); /* 64px */
+  --spacing-3xl: calc(var(--spacing-unit) * 12); /* 96px */
+  
+  /* Legacy support */
+  --gold: #B8A07E;
+}
+
+@theme inline {
+  --font-body: var(--font-body);
+  --font-heading: var(--font-heading);
+  
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  
+  --color-gold: var(--gold);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* --- Main content wrapper --- */
+
+.page-main-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* --- Custom Animations --- */
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
+}
+
+/* Shine effect for product cards */
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Ken Burns Effect - Cinematic slow zoom & pan */
+@keyframes kenBurns {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(calc(-50% + 20px), calc(-50% - 15px)) scale(1.03);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.ken-burns-effect {
+  animation: kenBurns 16s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Hero Gold Gradient Animation */
+@keyframes goldMove {
+  0% {
+    background-position: 70% 50%;
+  }
+  100% {
+    background-position: 74% 54%;
+  }
+}
+
+/* Hero Light Sweep Effect */
+@keyframes sweep {
+  0%   { transform: translateX(-8%) translateY(-4%); }
+  50%  { transform: translateX(8%) translateY(4%); }
+  100% { transform: translateX(-8%) translateY(-4%); }
+}
+
+/* Shimmer effect for modern buttons */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Premium Product Card Backgrounds */
+.premium-gold-bg {
+  position: relative;
+  background:
+    radial-gradient(circle at 70% 50%,
+      #f4ead8 0%,
+      #e8d7b8 35%,
+      #c7a979 65%,
+      #8f6f45 100%
+    );
+  background-size: 150% 150%;
+  animation: goldCardMove 14s ease-in-out infinite alternate;
+}
+
+.premium-silver-bg {
+  position: relative;
+  background:
+    radial-gradient(circle at 70% 50%,
+      #f5f5f5 0%,
+      #e5e5e5 35%,
+      #b8b8b8 65%,
+      #7a7a7a 100%
+    );
+  background-size: 150% 150%;
+  animation: goldCardMove 14s ease-in-out infinite alternate;
+}
+
+@keyframes goldCardMove {
+  0% {
+    background-position: 70% 50%;
+  }
+  100% {
+    background-position: 74% 54%;
+  }
+}
+
+/* Мягкая виньетка для карточек */
+.premium-gold-bg::before,
+.premium-silver-bg::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(
+    circle at 20% 50%,
+    rgba(0,0,0,0.25) 0%,
+    rgba(0,0,0,0.15) 40%,
+    rgba(0,0,0,0) 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle световой перелив */
+.premium-gold-bg::after,
+.premium-silver-bg::after {
+  content: "";
+  position: absolute;
+  inset: -25%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.05) 30%,
+    transparent 60%
+  );
+  mix-blend-mode: soft-light;
+  animation: cardSweep 18s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes cardSweep {
+  0%   { transform: translateX(-8%) translateY(-4%); }
+  50%  { transform: translateX(8%) translateY(4%); }
+  100% { transform: translateX(-8%) translateY(-4%); }
+}
+
+/* Живой шум для карточек */
+.premium-card-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  pointer-events: none;
+  animation: cardNoise 12s steps(10) infinite;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+}
+
+@keyframes cardNoise {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  10% { transform: translate(-3%, -5%) scale(1.02); }
+  20% { transform: translate(5%, -8%) scale(0.98); }
+  30% { transform: translate(-8%, 3%) scale(1.01); }
+  40% { transform: translate(4%, 6%) scale(0.99); }
+  50% { transform: translate(-6%, -4%) scale(1.02); }
+  60% { transform: translate(7%, 8%) scale(0.98); }
+  70% { transform: translate(-4%, -7%) scale(1.01); }
+  80% { transform: translate(6%, -3%) scale(0.99); }
+  90% { transform: translate(-5%, 5%) scale(1.01); }
+}
+
+/* 🎬 CINEMATIC FILM GRAIN ANIMATIONS - 35mm Film Simulation */
+
+/* Film Grain Movement - Organic analog texture */
+@keyframes filmGrainMove {
+  0%, 100% { transform: translate(0, 0); }
+  12.5% { transform: translate(-1px, 0.5px); }
+  25% { transform: translate(0.5px, -1px); }
+  37.5% { transform: translate(-0.5px, 1px); }
+  50% { transform: translate(1px, -0.5px); }
+  62.5% { transform: translate(-1px, -1px); }
+  75% { transform: translate(0.5px, 0.5px); }
+  87.5% { transform: translate(-0.5px, -0.5px); }
+}
+
+/* Vertical Jitter - Analog film gate flutter */
+@keyframes filmJitter {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(0.3px); }
+}
+
+/* Chromatic Aberration Shift - Lens imperfections */
+@keyframes chromaticShift {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(0.2px); }
+}
+
+/* Scanline Movement - CRT/Analog TV effect */
+@keyframes scanlineMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
