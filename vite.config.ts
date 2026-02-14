@@ -18,7 +18,7 @@ export default defineConfig({
       resolveId(source) {
         if (source.startsWith("figma:asset/")) {
           const file = source.replace("figma:asset/", "");
-          return path.resolve(__dirname, "src/figma-assets", file);
+          return path.resolve(__dirname, "src/assets", file);
         }
         return null;
       },
